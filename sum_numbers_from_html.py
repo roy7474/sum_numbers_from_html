@@ -3,6 +3,7 @@
 # and unzip it in the same directory as this file
 
 # http://py4e-data.dr-chuck.net/comments_42.html
+# http://py4e-data.dr-chuck.net/comments_1793480.html
 
 import urllib.request, urllib.error, urllib.parse
 from bs4 import BeautifulSoup
@@ -15,49 +16,17 @@ count=0
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
+try: 
+   url = input('Please enter the URL of the website: ')
+   html = urllib.request.urlopen(url, context=ctx).read() #urlopen(url, context=ctx).read()
+   soup = BeautifulSoup(html, "html.parser")
+   text = str(soup)
+   numbers_str = re.findall(r'>(\d+)',text)
+   numbers = [int(num_str) for num_str in numbers_str]
+   total =  sum(numbers)
+   print('The intergers found in this website were:', numbers_str)
+   print('The sum of those numbers is:', total)
 
-url = 'http://py4e-data.dr-chuck.net/comments_1793480.html'#('Enter - ')
-html = urllib.request.urlopen(url, context=ctx).read() #urlopen(url, context=ctx).read()
-soup = BeautifulSoup(html, "html.parser")
-
-# Retrieve all of the anchor tags
-#tags = soup('')
-#for tag in tags:
-#    numbers += 1
-    # Look at the parts of a tag
-#    print('TAG:', tag)
-#    print('URL:', tag.get('href', None))
-#    print('Contents:', tag.contents[0])
-#    print('Attrs:', tag.attrs)
-#print(numbers)
-
-text = str(soup)
-numbers_str = re.findall(r'>(\d+)',text)
-numbers = [int(num_str) for num_str in numbers_str]
-total =  sum(numbers)
-print(total)
-print(numbers_str)
-
-
-'''
-
-
-text = str(soup)
-for line in text:
-    line = line.rstrip()
-    x = re.findall('.>([0-9]+)', text)
-    if len(x) > 0:                          #tracting only strings
-        for val in x:
-'''
-
-'''
-for line in tags:
-    text = line.get_text()
-    count.extend(re.findall(r'\d+', text))
-    #Extract the number from each of the lines using a regular expression and the findall() method
-    x = re.findall('([0-9]+)', text)
-    if len(x) > 0:                          #tracting only strings
-        for val in x:
-            val = int(val)                  #converting strings into intergers
-            count.append(val)   
-'''
+except:
+   print('There was a problem while trying to open the website you enter. Please try again!')
+   exit()
