@@ -11,18 +11,19 @@ import ssl
 import re
 
 numbers = []
-count=0
 # Ignore SSL certificate errors
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
 ctx.verify_mode = ssl.CERT_NONE
+
+
 try: 
    url = input('Please enter the URL of the website: ')
-   html = urllib.request.urlopen(url, context=ctx).read() #urlopen(url, context=ctx).read()
+   html = urllib.request.urlopen(url, context=ctx).read() 
    soup = BeautifulSoup(html, "html.parser")
    text = str(soup)
-   numbers_str = re.findall(r'>(\d+)',text)
-   numbers = [int(num_str) for num_str in numbers_str]
+   numbers_str = re.findall(r'>(\d+)',text)                 #find all intergers after >
+   numbers = [int(num_str) for num_str in numbers_str]      #str to int
    total =  sum(numbers)
    print('The intergers found in this website were:', numbers_str)
    print('The sum of those numbers is:', total)
